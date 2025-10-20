@@ -1,5 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
+  <audio id="bgMusic" loop>
+    <source src="./bakenohana.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <script>
+    // Get the audio element
+    const bgMusic = document.getElementById('bgMusic');
+    let musicStarted = false;
+
+    // Function to start music
+    function startMusic() {
+      if (!musicStarted) {
+        bgMusic.play().then(() => {
+          musicStarted = true;
+          console.log('Background music started');
+        }).catch(error => {
+          console.log('Autoplay prevented:', error);
+        });
+      }
+    }
+
+    // Add click listener to the entire document
+    document.addEventListener('click', startMusic, { once: true });
+
+    // Also try on any touch event for mobile devices
+    document.addEventListener('touchstart', startMusic, { once: true });
+
+    // Also try on keypress for keyboard interaction
+    document.addEventListener('keydown', startMusic, { once: true });
+  </script>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
@@ -270,7 +301,7 @@
       }
     }
   </script>
-  
+
 </body>
 </html>
   <div class="container">
@@ -596,5 +627,37 @@ document.getElementById("sortBtn").onclick = function() {
     renderMessages(currentMessages);
 
   </script>
+  <audio id="bgMusic" loop>
+    <source src="bakenohana.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <script>
+    // Get the audio element
+    const bgMusic = document.getElementById('bgMusic');
+    let musicStarted = false;
+
+    // Function to start music
+    function startMusic() {
+      if (!musicStarted) {
+        bgMusic.play().then(() => {
+          musicStarted = true;
+          console.log('Background music started');
+        }).catch(error => {
+          console.log('Autoplay prevented:', error);
+        });
+      }
+    }
+
+    // Add click listener to the entire document
+    document.addEventListener('click', startMusic, { once: true });
+
+    // Also try on any touch event for mobile devices
+    document.addEventListener('touchstart', startMusic, { once: true });
+
+    // Also try on keypress for keyboard interaction
+    document.addEventListener('keydown', startMusic, { once: true });
+  </script>
+
 </body>
 </html>
