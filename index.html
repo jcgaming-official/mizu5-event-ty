@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Appreciation Message by Sakumi</title>
+  <style>
+    body {
+      background: #f2f2f2;
+      font-family: Arial, Helvetica, sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+    .container {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 18px 0 32px;
+  background: var(--color-white);
+  min-height: 100vh;
+  box-shadow: 0 6px 48px 0 rgba(0,0,0,.08);
+  border-radius: 17px;
+}
+
+/* Desktop: Wider container & more side padding */
+@media (min-width: 1024px) {
+  .container {
+    max-width: 900px;
+    padding: 28px 38px 48px 38px;
+  }
+  .message-list {
+    gap: 22px;
+    margin: 0 18px;
+  }
+  .header-title {
+    font-size: 2em;
+  }
+}
+    .header {
+      text-align: center;
+      margin-bottom: 18px;
+    }
+    .header img {
+      max-width: 180px;
+      border-radius: 7px;
+      margin-bottom: 10px;
+    }
+    .header h1 {
+      margin: 0 0 3px 0;
+      font-size: 1.6em;
+    }
+    .header h2 {
+      margin: 0;
+      font-weight: 400;
+      font-size: 1em;
+      color: #555;
+    }
+    .controls {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 20px 0 18px 0;
+      align-items: stretch;
+    }
+    @media (min-width:600px) {
+      .controls {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+    .controls .sort-btn, .controls .search-btn {
+      background: #FF9800;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 8px 16px;
+      font-size: 1em;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.09);
+      transition: background .2s;
+    }
+    .controls .sort-btn:hover, .controls .search-btn:hover {
+      background: #F57C00;
+    }
+    .controls .search-box {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex: 1 1 auto;
+    }
+    .controls input[type="text"] {
+      padding: 7px 9px;
+      border: 1.7px solid #FF9800;
+      border-radius: 4px;
+      font-size: 1em;
+      flex: 1 1 auto;
+      outline: none;
+      transition: border .2s;
+    }
+    .controls input[type="text"]:focus {
+      border-color: #F57C00;
+    }
+    .messages-list {
+      display: flex;
+      flex-direction: column;
+      gap: 13px;
+    }
+    .message-card {
+      background: #FF9800;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      padding: 11px 6px 11px 8px;
+      display: flex;
+      flex-direction: column;
+      transition: background .3s;
+    }
+    .message-header {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+    .profile-img {
+      background: #fff;
+      border-radius: 5px;
+      width: 45px;
+      height: 45px;
+      object-fit: cover;
+      margin-right: 10px;
+      border: 2px solid #FFB74D;
+      flex-shrink: 0;
+    }
+    .message-info {
+      flex: 1 1 auto;
+      padding-right: 10px;
+    }
+    .discord-name {
+      font-size: 1em;
+      color: #222;
+      margin-bottom: 2px;
+      font-weight: normal;
+    }
+    .sample-text {
+      font-weight: bold;
+      font-size: 1.07em;
+    }
+    .arrow-btn {
+      width: 35px;
+      height: 35px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      background: none;
+      transition: transform .3s;
+    }
+    .arrow-svg {
+      transition: transform .3s;
+      fill: #181818;
+      width: 28px;
+      height: 28px;
+      display: block;
+    }
+    .message-card.expanded {
+      background: #FFCC80;
+    }
+    .message-card .extended-text {
+      max-height: 300px;
+      opacity: 1;
+      padding: 16px 8px 6px 55px;
+      font-size: 1em;
+      color: #1f1f1f;
+      transition: max-height .3s, opacity .3s, padding .3s;
+      overflow: hidden;
+      margin-top: -2px;
+    }
+    .message-card:not(.expanded) .extended-text {
+      max-height: 0;
+      opacity: 0;
+      padding: 0 8px 0 55px;
+    }
+    /* Responsive */
+    @media (max-width:650px) {
+      .container {padding: 0}
+      .profile-img {width: 40px; height: 40px;}
+      .message-card .extended-text {padding-left: 49px;}
+    }
+  </style>
+</head>
+<body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* Overlay to hide the site */
+    #popup-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: #10101A;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+    /* Modal box */
+    #popup-message {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+      width: 90vw; max-width: 350px;
+      padding: 32px 20px 24px 20px;
+      text-align: center;
+      font-family: 'Inter', Arial, sans-serif;
+    }
+    #popup-message p {
+      color: #333;
+      font-size: 15px;
+      margin-bottom: 28px;
+    }
+    .popup-btn {
+      padding: 10px 22px;
+      border: none;
+      border-radius: 16px;
+      font-size: 15px;
+      margin: 0 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    #cancel-btn { background: #f1f1f1; color: #333; }
+    #view-btn { background: #8ae5dc; color: #333; }
+    #cancel-btn:hover { background: #e1e1e1; }
+    #view-btn:hover { background: #67cfc0; }
+    @media (max-width: 480px) {
+      #popup-message { padding: 22px 8px 18px 8px; font-size: 14px; }
+      .popup-btn { font-size: 14px; padding: 8px 18px; }
+    }
+  </style>
+</head>
+<body>
+  <div id="popup-overlay">
+    <div id="popup-message">
+      <p>
+        After you view this website, Sakumi will temporarily no longer appear in the Real World on the earth.<br>
+        Are you sure you want to continue?
+      </p>
+      <button class="popup-btn" id="cancel-btn">Cancel</button>
+      <button class="popup-btn" id="view-btn">View</button>
+    </div>
+  </div>
+  <script>
+    // Track if both buttons have been clicked
+    let cancelClicked = false, viewClicked = false;
+
+    document.getElementById('cancel-btn').onclick = function() {
+      cancelClicked = true;
+      checkAccess();
+    };
+    document.getElementById('view-btn').onclick = function() {
+      viewClicked = true;
+      checkAccess();
+    };
+
+    function checkAccess() {
+      // Only allow access if both buttons are clicked at least once
+      if (cancelClicked || viewClicked) {
+        document.getElementById('popup-overlay').style.display = 'none';
+      }
+    }
+  </script>
+  
+</body>
+</html>
+  <div class="container">
+    <div class="header">
+      <img src="./event_thorns_2025.png" alt="Event banner" />
+      <h1>Appreciation Message</h1>
+      <h2>by Sakumi</h2>
+    </div>
+    <div class="controls">
+      <button class="sort-btn" id="sortBtn" aria-label="Sort by Name (A-Z)">Sort by Name</button>
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search Discord/Sekai Name..." aria-label="Search Discord/Sekai Name" />
+        <button class="search-btn" id="searchBtn" aria-label="Search">Search</button>
+      </div>
+    </div>
+    <div class="messages-list" id="messagesList">
+      
+    </div>
+  </div>
+  <script>
+  const stickyMessage = {
+  id: 1,
+  discord_name: "sticky message",
+  sample_text: "twindrill_twilight",
+  extended_text: "Happy Birthday!!! Thank you so much for playing with me so nice. I'm glad that I made you happy when we met first in the game! congrats to your top mizu5 rank! cheesecake!",
+  profile_image: "./pfp/twindrill.png"
+};
+    const messages = [
+      {
+        id: 1,
+        discord_name: "Twindrill",
+        sample_text: "twindrill_twilight",
+        extended_text: "Happy Birthday!!! Thank you so much for playing with me so nice. I'm glad that I made you happy when we met first in the game! congrats to your top mizu5 rank! cheesecake!",
+        profile_image: "./pfp/twindrill.png"
+      },
+      {
+        id: 2,
+        discord_name: "N25_Yeon",
+        sample_text: "n_25_fuyu",
+        extended_text: "My first lobby! Thank you for accepting and playing with me!",
+        profile_image: "./pfp/yeon.png"
+      },
+      {
+        id: 3,
+        discord_name: "𝜗𝜚 amia.exe",
+        sample_text: "secretmizuki",
+        extended_text: "My first lobby team! Thank you for accepting and playing with me!",
+        profile_image: "./pfp/secret_mizuki.png"
+      },
+      {
+        id: 4,
+        discord_name: "mxmina_",
+        sample_text: "mxmina_",
+        extended_text: "My first lobby team! Thank you for accepting and playing with me!",
+        profile_image: "./pfp/mxmina.png"
+      },
+      {
+        id: 5,
+        discord_name: "♡AvaCado18♡",
+        sample_text: "avacado18",
+        extended_text: "My first lobby team! Thank you for accepting and playing with me!",
+        profile_image: "./pfp/avacado18.png"
+      },
+      {
+        id: 6,
+        discord_name: "+1",
+        sample_text: "thelegendaryplusone",
+        extended_text: "Thank you for playing with so long! mai!",
+        profile_image: "./pfp/mai.png"
+      },
+      {
+        id: 7,
+        discord_name: "Enyxh",
+        sample_text: "specimenqirl",
+        extended_text: "Thank you for playing with me!",
+        profile_image: "./pfp/eny.png"
+      },
+      {
+        id: 8,
+        discord_name: "jyit_6897",
+        sample_text: "jyit",
+        extended_text: "Thank you for playing with me!",
+        profile_image: "./pfp/jyit.png"
+      },
+      {
+        id: 9,
+        discord_name: "keon:]",
+        sample_text: "whorewuxian",
+        extended_text: "Thank you for playing with me!",
+        profile_image: "./pfp/keon.png"
+      },
+      {
+        id: 10,
+        discord_name: "Strix",
+        sample_text: "corruptpursuits",
+        extended_text: "Thank you for playing with me and talking about the seeds. If you guys didn't talk about it, My card points is still low. from 240k to 300k. btw i saw your dm saying I should not surpass your rank and I did lol. otsu 77777777 points",
+        profile_image: "./pfp/strix.png"
+      },
+      {
+        id: 11,
+        discord_name: "HeroponJ",
+        sample_text: "heroponj",
+        extended_text: "Thank you for smooth playing with me hero! You are the highest rank I've played with you in Day 2. Congrats to your rank!",
+        profile_image: "./pfp/hero.png"
+      },
+      {
+        id: 12,
+        discord_name: "sia, the Witch",
+        sample_text: "cimeesia",
+        extended_text: "Thank you for playing with me manager!",
+        profile_image: "./pfp/sia.png"
+      },
+      {
+        id: 13,
+        discord_name: "thisissophia",
+        sample_text: "thisissophia99",
+        extended_text: "Thank you for playing with me smootly!",
+        profile_image: "./pfp/phia.png"
+      },
+      {
+        id: 14,
+        discord_name: "Amy ♡",
+        sample_text: "lolitadora",
+        extended_text: "Thank you for playing with me so long amy!",
+        profile_image: "./pfp/amy.png"
+      },
+      {
+        id: 15,
+        discord_name: "Kanako",
+        sample_text: "kanakomitsue",
+        extended_text: "Thank you for playing with me!",
+        profile_image: "./pfp/kanako.png"
+      },
+      {
+        id: 16,
+        discord_name: "nanashi",
+        sample_text: "d_3rpy",
+        extended_text: "Thank you for playing with me!",
+        profile_image: "./pfp/nanashi.png"
+      },
+      {
+        id: 17,
+        discord_name: "Yukimara",
+        sample_text: "_machinegunpoemdoll",
+        extended_text: "Thank you for playing with me!",
+        profile_image: "./pfp/yukimara.png"
+      },
+      {
+        id: 18,
+        discord_name: "anne ੈ₊˚•.",
+        sample_text: "https_annenasje.com",
+        extended_text: "Thank you for playing with me!. I'm not totally mad at you when you picked the wrong song, im just messing with you. Sorry!",
+        profile_image: "./pfp/anne.png"
+      },
+      {
+        id: 19,
+        discord_name: "Tofu",
+        sample_text: "arthurconta2178",
+        extended_text: "Thank you for playing with me funny guy!",
+        profile_image: "./pfp/tofu.png"
+      },
+      {
+        id: 20,
+        discord_name: "jas",
+        sample_text: "zlelda",
+        extended_text: "Thank you for playing with me so long! I was scared when I didn't see you closely to my rank it turns out that you just stopped and thankfully you managed to get T100. Congrats!",
+        profile_image: "./pfp/jas.png"
+      },
+      {
+        id: 21,
+        discord_name: "Dex",
+        sample_text: "dexy_chan",
+        extended_text: "Thank you for playing with me!",
+        profile_image: "./pfp/dex.png"
+      },
+      {
+        id: 22,
+        discord_name: "luvs",
+        sample_text: "luvzleyy",
+        extended_text: "Thank you for playing with me! I wonder if you can still see a cockroach. keep safe!",
+        profile_image: "./pfp/luvs.png"
+      },
+      {
+      id: 23,
+        discord_name: "In Mizu5 recovery room.",
+        sample_text: "pikasky",
+        extended_text: "Thank you for playing with me so long!",
+        profile_image: "./pfp/pika.png"
+      },
+      {
+      id: 24,
+        discord_name: "nagita💛💗💙",
+        sample_text: "nagitashinjiro",
+        extended_text: "Thank you for playing with me and talking about some stuff!",
+        profile_image: "./pfp/nagita.png"
+      },
+      {
+      id: 25,
+        discord_name: "seren ✧.*",
+        sample_text: "seriphyl",
+        extended_text: "Thank you for inviting and playing with me!. Congrats to your top rank!",
+        profile_image: "./pfp/seren.png"
+      },
+      {
+      id: 26,
+        discord_name: "Nywo",
+        sample_text: "nyworin",
+        extended_text: "Thank you for playing with me!",
+        profile_image: "./pfp/nywo.png"
+      },
+      {
+      id: 26,
+        discord_name: "!R8SS/Everyone",
+        sample_text: "Thank you so much",
+        extended_text: "Thank you so much R8SS! I reached top 100 because of this server. Thank you everyone, fillers and sniper for your all support and making the room smooth and fast as possible. I learned so much about tiering and how this server works. I'm sorry if any of you i didn't include you because maybe i forgot it, if you know who you are Thank you so much for playing with me! Otsu and Ganba everyone!. I'm looking forward to see you next tiering soon!",
+        profile_image: "./pfp/r8ss.png"
+      }
+    ];
+
+    let currentMessages = [...messages];
+    let sortAsc = true;
+    
+
+// Sort messages ascending by default before initial render
+currentMessages.sort((a, b) => a.discord_name.localeCompare(b.discord_name));
+
+// Initial render
+renderMessages(currentMessages);
+
+// Sort button logic
+document.getElementById("sortBtn").onclick = function() {
+  sortAsc = !sortAsc;
+  currentMessages.sort((a, b) =>
+    sortAsc ? a.discord_name.localeCompare(b.discord_name) : b.discord_name.localeCompare(a.discord_name)
+  );
+  this.textContent = sortAsc ? "Sort by Name A-Z" : "Sort by Name Z-A";
+  renderMessages(currentMessages);
+};
+
+    function renderMessages(list) {
+      const container = document.getElementById('messagesList');
+      container.innerHTML = '';
+      list.forEach((msg, idx) => {
+        const card = document.createElement('div');
+        card.className = 'message-card';
+        card.setAttribute('tabindex', '0'); // for accessibility
+        card.innerHTML = `
+          <div class="message-header" role="button" aria-expanded="false" tabindex="0">
+            <img class="profile-img" src="${msg.profile_image}" alt="Profile of ${msg.discord_name}" />
+            <div class="message-info">
+              <div class="discord-name">${msg.discord_name}</div>
+              <div class="sample-text">${idx+1}. ${msg.sample_text}</div>
+            </div>
+            <button class="arrow-btn" aria-label="Expand/Collapse message">
+              <svg class="arrow-svg" viewBox="0 0 24 24">
+                <polygon points="7,10 17,10 12,15" />
+              </svg>
+            </button>
+          </div>
+          <div class="extended-text">${msg.extended_text}</div>
+        `;
+        // expand/collapse logic
+        const header = card.querySelector('.message-header');
+        const arrowBtn = card.querySelector('.arrow-btn');
+        const arrowSvg = card.querySelector('.arrow-svg');
+        header.onclick = arrowBtn.onclick = function(e) {
+          e.stopPropagation();
+          card.classList.toggle('expanded');
+          const expanded = card.classList.contains('expanded');
+          header.setAttribute('aria-expanded', expanded ? "true" : "false");
+          // rotate arrow
+          arrowSvg.style.transform = expanded ? "rotate(180deg)" : "rotate(0deg)";
+        };
+        // accessibility: keyboard open/close
+        header.onkeydown = function(e){
+          if (e.key === "Enter" || e.key === " ") {
+            header.onclick(e);
+          }
+        };
+        container.appendChild(card);
+      });
+    }
+
+    // Sort button
+    document.getElementById('sortBtn').onclick = function() {
+      sortAsc = !sortAsc;
+      currentMessages.sort((a, b) =>
+        sortAsc
+          ? a.discord_name.localeCompare(b.discord_name)
+          : b.discord_name.localeCompare(a.discord_name)
+      );
+      this.textContent = sortAsc ? "Sort by Name (A-Z)" : "Sort by Name (Z-A)";
+      renderMessages(currentMessages);
+    };
+
+    // Search function
+    document.getElementById('searchBtn').onclick = function() {
+      const term = document.getElementById('searchInput').value.trim().toLowerCase();
+      if (term === "") {
+        currentMessages = [...messages];
+      } else {
+        currentMessages = messages.filter(msg => msg.discord_name.toLowerCase().includes(term));
+      }
+      renderMessages(currentMessages);
+    };
+
+    // Live search on Enter key
+    document.getElementById('searchInput').addEventListener('keydown', function(e){
+      if(e.key === "Enter") {
+        document.getElementById('searchBtn').click();
+      }
+    });
+
+    // If search bar is cleared, show all messages
+    document.getElementById('searchInput').addEventListener('input', function(){
+      if(this.value.trim() === "") {
+        currentMessages = [...messages];
+        renderMessages(currentMessages);
+      }
+    });
+
+    // Initial render
+    renderMessages(currentMessages);
+
+  </script>
+</body>
+</html>
