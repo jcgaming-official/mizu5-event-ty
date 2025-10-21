@@ -19,6 +19,9 @@ A simple webpage and responsive design of the appreciation letter for Project Se
 
 ![main](https://i.ibb.co/Jwpy6jvy/2d.png)
 ### Mobile Mode
+![pop-up](https://i.ibb.co/Y4wgP4T0/Screenshot-20251021-115022.jpg)
+
+![main](https://i.ibb.co/8DcFYMKm/Screenshot-20251021-115049.jpg)
 ## Usage/Examples
 Change the event banner and your name:
 ```html
@@ -58,7 +61,7 @@ Change pop-up message:
 ## Deployment
 
 To deploy this project, fork this [repository](https://github.com/jcgaming-official/mizu5-event-ty/fork), go to [Vercel](https://vercel.com/), log in with your GitHub account, click Add New → Project, select this repository, keep the default settings, and click Deploy to launch your static website and you are now ready to share the link
-
+[Click here](https://mizu5-event-ty.vercel.app/) for live preview 
 
 
 ## Support the Project ⭐
